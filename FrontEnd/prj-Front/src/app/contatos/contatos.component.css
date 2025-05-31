@@ -1,0 +1,13 @@
+.pointer{
+    cursor: pointer;
+}
+
+img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.teste{
+    text-align: start !important;
+}
