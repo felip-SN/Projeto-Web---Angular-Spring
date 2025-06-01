@@ -3,6 +3,8 @@ package br.gov.sp.agenda.agendaback.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import br.gov.sp.agenda.agendaback.entity.Contato;
@@ -31,9 +33,14 @@ public class ContatoService {
         return "Contato deletado com sucesso!";
     }
 
-    public List<Contato> findAll(){
-        List<Contato> lista = this.contatoRepository.findAll();
-        return lista;
+    // public Page<Contato> findAll(PageRequest pageRequest){
+    //     List<Contato> lista = this.contatoRepository.findAll();
+    //     return lista;
+    // }
+
+    public Page<Contato> pagination(int pageNumber, int pageSize){
+        Page<Contato> contatos = this.contatoRepository.findAll(PageRequest.of(pageNumber, pageSize));
+        return contatos;
     }
 
     public List<Contato> findByCategory(Categoria categoria){
