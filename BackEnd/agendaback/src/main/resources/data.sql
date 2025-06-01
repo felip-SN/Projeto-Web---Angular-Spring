@@ -1,0 +1,1 @@
+INSERT INTO Contato(nome,telefone) VALUES ('Felipe', '13981081838')
