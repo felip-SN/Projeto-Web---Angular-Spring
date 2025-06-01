@@ -26,10 +26,10 @@ public class Contato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @Column(nullable = false)
+    @Column(nullable = false)
     private String nome;
 
-    // @Column(nullable = false)
+    @Column(nullable = false)
     private String telefone;
     private String telefoneSecundario;
     private String email;
