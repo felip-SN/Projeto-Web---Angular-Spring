@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Contato } from '../types/interface';
+import { Contato, ContatoResponse } from '../types/interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +9,12 @@ import { Contato } from '../types/interface';
 export class ContatoService {
   constructor(private httpClient: HttpClient) { }
 
-  get(url: string): Observable<Contato[]>{
-    return this.httpClient.get<Contato[]>(url);
+  get(url: string): Observable<any>{
+    return this.httpClient.get<any>(url);
   }
 
-  save(url: string, contato: Contato): Observable<Contato>{
-    return this.httpClient.post<Contato>(url, contato);
+  save(url: string, contato: any): Observable<any>{
+    return this.httpClient.post<any>(url, contato);
   }
 
   delete(url: string): Observable<void>{

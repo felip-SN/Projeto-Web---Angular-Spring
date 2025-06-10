@@ -33,7 +33,7 @@ public class Contato {
     private String telefone;
     private String telefoneSecundario;
     private String email;
-    private String endereço;
+    private String endereco;
 
     @Lob
     private byte[] foto;

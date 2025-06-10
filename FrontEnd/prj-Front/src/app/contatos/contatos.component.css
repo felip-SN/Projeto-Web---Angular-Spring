@@ -11,3 +11,8 @@ img{
 .teste{
     text-align: start !important;
 }
+
+a{
+    cursor: pointer;
+    color: black;
+}
