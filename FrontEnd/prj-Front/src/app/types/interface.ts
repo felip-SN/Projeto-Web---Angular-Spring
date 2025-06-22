@@ -5,7 +5,7 @@ export interface Contato{
     "telefoneSecundario": string,
     "email": string,
     "endereco": string,
-    "foto": Blob,
+    "foto": string,
     "dataAniversario": Date;
     "empresa": string,
     "cargo": string,
@@ -20,7 +20,7 @@ export class ContatoModal{
   telefoneSecundario?: string;
   email?: string;
   endereco?: string;
-  foto?: Blob;
+  foto?: string;
   dataAniversario?: string;
   cargo?: string;
   favorito?: boolean;

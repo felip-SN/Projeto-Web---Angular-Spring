@@ -16,3 +16,9 @@ a{
     cursor: pointer;
     color: black;
 }
+
+.dropdown{
+    max-width: fit-content;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}

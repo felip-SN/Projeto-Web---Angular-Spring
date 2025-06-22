@@ -3,3 +3,7 @@ img{
     height: 30px;
     border-radius: 50%;
 }
+
+svg{
+    cursor: pointer !important;
+}

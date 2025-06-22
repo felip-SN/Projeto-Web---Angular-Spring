@@ -13,15 +13,15 @@ export class ContatoService {
     return this.httpClient.get<any>(url);
   }
 
-  save(url: string, contato: any): Observable<any>{
-    return this.httpClient.post<any>(url, contato);
+  save(url: string, contato: any): Observable<string>{
+    return this.httpClient.post(url, contato, {responseType: 'text'});
   }
 
-  delete(url: string): Observable<void>{
-    return this.httpClient.delete<void>(url);
+  delete(url: string): Observable<string>{
+    return this.httpClient.delete(url, {responseType: 'text'});
   }
 
-  update(url: string, contato: Contato): Observable<Contato>{
-    return this.httpClient.put<Contato>(url, contato);
+  update(url: string, contato: any): Observable<string>{
+    return this.httpClient.put(url, contato, {responseType: 'text'});
   }
 }

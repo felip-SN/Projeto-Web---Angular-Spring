@@ -20,10 +20,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr *ngFor="let contato of contatoList">
                                 <td><img src="sucesso.jpg"></td>
-                                <td>Felipe</td>
-                                <td>13 981081838</td>
+                                <td>{{contato.nome}}</td>
+                                <td>{{contato.telefone}}</td>
                                 <td>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-info-circle" viewBox="0 0 16 16">

@@ -28,6 +28,13 @@ public class ContatoService {
         return "Contato atualizado com sucesso!";
     }
 
+    public String favoritar(Contato contato, Boolean favorito, Long id){
+        contato.setId(id);
+        contato.setFavorito(favorito);
+        this.contatoRepository.save(contato);
+        return "Contato favorito com sucesso!";
+    }
+
     public String delete(Long id){
         this.contatoRepository.deleteById(id);
         return "Contato deletado com sucesso!";

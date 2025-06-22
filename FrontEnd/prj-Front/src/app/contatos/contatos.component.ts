@@ -15,12 +15,17 @@ export class ContatosComponent {
   pageNumber: number = 0;
   pageSize: number = 0;
   totalPage: number = 0;
+
+  page: number = 1;
   favorite: boolean = false;
 
   formGroupContato: FormGroup;
   contatoModal = new ContatoModal();
 
   contatosList: Contato[] = [];
+
+  text: string = "";
+  category: string = "Categoria";
 
   constructor(private contatoService: ContatoService, private formBuilder: FormBuilder) {
     this.getContatos();
@@ -41,36 +46,78 @@ export class ContatosComponent {
     })
   }
 
-  open(content: TemplateRef<any>) {
+  open(content: TemplateRef<any>, modal: string = "", id: number = 0) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true })
+
+    if (modal == "edit") {
+      const contato = this.contatosList.find(c => c.id == id);
+
+      this.formGroupContato.setValue({
+        id: contato?.id,
+        nome: contato?.nome,
+        telefone: contato?.telefone,
+        telefoneSecundario: contato?.telefoneSecundario,
+        email: contato?.email,
+        endereco: contato?.endereco,
+        foto: contato?.foto,
+        dataAniversario: contato?.dataAniversario,
+        empresa: contato?.empresa,
+        cargo: contato?.cargo,
+        favorito: contato?.favorito,
+        categoria: contato?.categoria
+      });
+
+      if (this.formGroupContato.get("categoria")?.value == "" || this.formGroupContato.get("categoria")?.value == null) {
+        this.category = "Categoria";
+      } else {
+        this.category = this.formGroupContato.get("categoria")?.value;
+      }
+    }
   }
 
-  favoriteClick() {
-    this.favorite = !this.favorite;
+  getCategory(category: string) {
+    this.category = category;
   }
 
-  nextPage(){
-    if(this.pageNumber < this.totalPage){
-        this.pageNumber += 1;
+  fileBase64: string = '';
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fileBase64 = reader.result as string;
+      };
+      reader.readAsDataURL(file); // file para base64
+    }
+  }
+
+  nextPage() {
+    if (this.pageNumber < this.totalPage) {
+      this.pageNumber += 1;
     }
 
-    this.getContatos(this.pageNumber);
+    this.page = this.pageNumber;
+
+    this.getContatos();
   }
 
-  previosPage(){
-    if(this.pageNumber > 1){
-        this.pageNumber -= 1;
+  previosPage() {
+    if (this.pageNumber > 1) {
+      this.pageNumber -= 1;
     }
 
-    this.getContatos(this.pageNumber);
+    this.page = this.pageNumber;
+
+    this.getContatos();
   }
 
-  getContatos(page: number = 1) {
-    var apiUrl = `http://localhost:8080/api/contato/getContatos?pageNumber=${page}&pageSize=10`;
+  getContatos() {
+    var apiUrl = `http://localhost:8080/api/contato/getContatos?pageNumber=${this.page}&pageSize=10`;
 
     this.contatoService.get(apiUrl).subscribe({
       next: (data: ContatoResponse) => {
-        console.log(data.content);
         this.contatosList = data.content;
         this.pageNumber = data.pageable.pageNumber + 1;
         this.pageSize = data.pageable.pageSize;
@@ -79,17 +126,59 @@ export class ContatosComponent {
     });
   }
 
-  postContato(){
+  postContato() {
     var apiUrl = "http://localhost:8080/api/contato/save";
 
     this.contatoModal = this.formGroupContato.value;
 
+    this.contatoModal.categoria = this.category;
+    this.contatoModal.foto = this.fileBase64;
+
+    debugger;
     this.contatoService.save(apiUrl, this.contatoModal).subscribe({
       next: (data) => {
-        console.log(this.formGroupContato.get('categoria')?.value)
         this.formGroupContato.reset();
         this.getContatos();
       }
-    })
+    });
+  }
+
+  deleteContato(id: number) {
+    var apiUrl = `http://localhost:8080/api/contato/delete/${id}`;
+
+    this.contatoService.delete(apiUrl).subscribe({
+      next: (data) => {
+        this.getContatos();
+      }
+    });
+  }
+
+  updateContato(id: number) {
+    const contato = this.contatosList.find(c => c.id == id);
+    const novoFavorito = !contato?.favorito;
+
+    var apiUrl = `http://localhost:8080/api/contato/favoritar/${id}?favorito=${novoFavorito}`;
+
+    this.contatoService.update(apiUrl, contato).subscribe({
+      next: (data) => {
+        contato!.favorito = novoFavorito;
+        this.getContatos();
+      }
+    });
+  }
+
+  buscarContato(nome: string = "") {
+    var apiUrl = `http://localhost:8080/api/contato/buscar?nome=${nome}`;
+
+    if (nome == "" || nome == null) {
+      this.getContatos();
+      return;
+    }
+
+    this.contatoService.get(apiUrl).subscribe({
+      next: data => {
+        this.contatosList = data;
+      }
+    });
   }
 }

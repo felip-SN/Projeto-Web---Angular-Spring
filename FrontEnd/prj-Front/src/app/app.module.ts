@@ -9,7 +9,8 @@ import { FooterComponent } from './footer/footer.component';
 import { ContatosComponent } from './contatos/contatos.component';
 import { ContatosFavoritosComponent } from './contatos-favoritos/contatos-favoritos.component';
 import { provideHttpClient } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule,
+    FormsModule
   ],
   providers: [
     provideHttpClient()
