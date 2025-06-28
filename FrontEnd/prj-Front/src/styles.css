@@ -2,8 +2,7 @@
 
 body{
     height: 100vh;
-
-    background-color: #1f1f1f;
+    background-color: #0d0d0d;
 }
 
 .center-div {
@@ -13,5 +12,10 @@ body{
 }
 
 h1{
-    color: white;
+    color: #f2e852;
+}
+
+.card{
+    box-shadow: 10px 10px #d92323;
+    border-radius: 0px !important;
 }

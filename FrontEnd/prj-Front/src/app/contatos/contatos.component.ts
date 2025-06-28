@@ -43,7 +43,7 @@ export class ContatosComponent {
       cargo: [],
       favorito: [],
       categoria: [],
-    })
+    });
   }
 
   open(content: TemplateRef<any>, modal: string = "", id: number = 0) {
@@ -52,22 +52,35 @@ export class ContatosComponent {
     if (modal == "edit") {
       const contato = this.contatosList.find(c => c.id == id);
 
-      this.formGroupContato.setValue({
-        id: contato?.id,
-        nome: contato?.nome,
-        telefone: contato?.telefone,
-        telefoneSecundario: contato?.telefoneSecundario,
-        email: contato?.email,
-        endereco: contato?.endereco,
-        foto: contato?.foto,
-        dataAniversario: contato?.dataAniversario,
-        empresa: contato?.empresa,
-        cargo: contato?.cargo,
-        favorito: contato?.favorito,
-        categoria: contato?.categoria
-      });
+      // this.formGroupContato.setValue({
+      //   id: contato?.id,
+      //   nome: contato?.nome,
+      //   telefone: contato?.telefone,
+      //   telefoneSecundario: contato?.telefoneSecundario,
+      //   email: contato?.email,
+      //   endereco: contato?.endereco,
+      //   foto: contato?.foto,
+      //   dataAniversario: contato?.dataAniversario,
+      //   empresa: contato?.empresa,
+      //   cargo: contato?.cargo,
+      //   favorito: contato?.favorito,
+      //   categoria: contato?.categoria
+      // });
 
-      if (this.formGroupContato.get("categoria")?.value == "" || this.formGroupContato.get("categoria")?.value == null) {
+      this.contatoModal.id = contato?.id;
+      this.contatoModal.nome = contato?.nome,
+        this.contatoModal.telefone = contato?.telefone,
+        this.contatoModal.telefoneSecundario = contato?.telefoneSecundario,
+        this.contatoModal.email = contato?.email,
+        this.contatoModal.endereco = contato?.endereco,
+        this.contatoModal.foto = contato?.foto,
+        this.contatoModal.dataAniversario = contato?.dataAniversario,
+        this.contatoModal.empresa = contato?.empresa,
+        this.contatoModal.cargo = contato?.cargo,
+        this.contatoModal.favorito = contato?.favorito,
+        this.contatoModal.categoria = contato?.categoria
+
+      if (this.contatoModal.categoria == "" || this.contatoModal.categoria == null) {
         this.category = "Categoria";
       } else {
         this.category = this.formGroupContato.get("categoria")?.value;
@@ -79,17 +92,11 @@ export class ContatosComponent {
     this.category = category;
   }
 
-  fileBase64: string = '';
+  fileSelecionado: File | null = null;
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.fileBase64 = reader.result as string;
-      };
-      reader.readAsDataURL(file); // file para base64
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      this.fileSelecionado = event.target.files[0];
     }
   }
 
@@ -127,19 +134,19 @@ export class ContatosComponent {
   }
 
   postContato() {
-    var apiUrl = "http://localhost:8080/api/contato/save";
+    const formData = new FormData();
+    formData.append('contato', new Blob([JSON.stringify(this.formGroupContato.value)], {
+      type: 'application/json'
+    }));
 
-    this.contatoModal = this.formGroupContato.value;
+    if (this.fileSelecionado) {
+      formData.append('foto', this.fileSelecionado);
+    }
 
-    this.contatoModal.categoria = this.category;
-    this.contatoModal.foto = this.fileBase64;
-
-    debugger;
-    this.contatoService.save(apiUrl, this.contatoModal).subscribe({
-      next: (data) => {
-        this.formGroupContato.reset();
-        this.getContatos();
-      }
+    this.contatoService.save('http://localhost:8080/api/contato/save', formData).subscribe(() => {
+      this.formGroupContato.reset();
+      this.fileSelecionado = null;
+      this.getContatos();
     });
   }
 

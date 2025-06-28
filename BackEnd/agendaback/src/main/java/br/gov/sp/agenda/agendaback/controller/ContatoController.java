@@ -1,11 +1,10 @@
 package br.gov.sp.agenda.agendaback.controller;
 
-import java.sql.Blob;
-import java.time.LocalDate;
-import java.util.Base64;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-
-import javax.sql.rowset.serial.SerialBlob;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,10 +19,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.gov.sp.agenda.agendaback.entity.Contato;
-import br.gov.sp.agenda.agendaback.entity.ContatoDTO;
 import br.gov.sp.agenda.agendaback.enums.Categoria;
 import br.gov.sp.agenda.agendaback.service.ContatoService;
 
@@ -35,33 +35,22 @@ public class ContatoController {
     private ContatoService contatoService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody ContatoDTO contatoDTO) {
+    public ResponseEntity<String> save(@RequestPart("contato") Contato contato,
+            @RequestPart(value = "foto", required = false) MultipartFile fotoFile) {
         try {
-            Contato contato = new Contato();
-            contato.setNome(contatoDTO.getNome());
-            contato.setTelefone(contatoDTO.getTelefone());
-            contato.setTelefoneSecundario(contatoDTO.getTelefoneSecundario());
-            contato.setEmail(contatoDTO.getEmail());
-            contato.setEndereco(contatoDTO.getEndereco());
-            contato.setDataAniversario(
-                    LocalDate.parse(contatoDTO.getDataAniversario())
-            );
-            contato.setEmpresa(contatoDTO.getEmpresa());
-            contato.setCargo(contatoDTO.getCargo());
-            contato.setCategoria(Categoria.valueOf(contatoDTO.getCategoria())); 
 
+            if (fotoFile != null && !fotoFile.isEmpty()) {
+                String fileName = UUID.randomUUID() + "_" + fotoFile.getOriginalFilename();
+                Path uploadPath = Paths.get("src/main/resources/static/uploads", fileName);
+                Files.copy(fotoFile.getInputStream(), uploadPath);
 
-            if (contatoDTO.getFoto() != null && contatoDTO.getFoto().contains(",")) {
-                String base64Data = contatoDTO.getFoto().split(",")[1]; 
-                byte[] imageBytes = Base64.getDecoder().decode(base64Data);
-                Blob blob = new SerialBlob(imageBytes);
-                contato.setFoto(new Blob[] { blob });
+                contato.setFoto("uploads/" + fileName);
             }
 
             contatoService.save(contato);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Criado com sucesso");
+            return new ResponseEntity<>("Contato salvo", HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro ao salvar contato", HttpStatus.BAD_REQUEST);
         }
     }
 

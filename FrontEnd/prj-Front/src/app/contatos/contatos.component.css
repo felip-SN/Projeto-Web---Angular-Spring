@@ -22,3 +22,24 @@ a{
     margin-left: auto !important;
     margin-right: auto !important;
 }
+
+.btn-outline-dark:hover{
+    background-color: #8c6723;
+    border: #8c6723;
+}
+
+.form-control:focus{
+    box-shadow: rgb(140, 103, 35) !important;
+}
+
+.search{
+    width: 30%;
+}
+
+.img{
+    width: 150px !important;
+    height: 150px !important;
+
+    border-radius: 50% !important;
+    cursor: pointer;
+}

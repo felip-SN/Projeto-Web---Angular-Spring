@@ -1,0 +1,11 @@
+.bg{
+    background-color: #732424;
+}
+
+span{
+    color: #f2e852;
+}
+
+.nav-link.active{
+    background-color: #8c6723 !important;
+}

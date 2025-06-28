@@ -1,9 +1,6 @@
 package br.gov.sp.agenda.agendaback.entity;
 
-import java.sql.Blob;
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.gov.sp.agenda.agendaback.enums.Categoria;
 import jakarta.persistence.Column;
@@ -13,7 +10,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,9 +34,7 @@ public class Contato {
     private String email;
     private String endereco;
 
-    @Lob
-    @JsonIgnore
-    private Blob[] foto;
+    private String foto;
     private LocalDate dataAniversario;
 
     private String empresa;

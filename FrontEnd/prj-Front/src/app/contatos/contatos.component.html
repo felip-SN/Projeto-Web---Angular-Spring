@@ -9,15 +9,19 @@
         <div class="row">
             <div class="card">
                 <div class="card-body">
-                    <div class="btn-toolbar justify-content-between" role="toolbar">
-                        <button class="btn btn-outline-primary mb-2 me-2" (click)="open(content, '')">
+                    <div class="btn-toolbar justify-content-center" role="toolbar">
+                        <button class="btn btn-outline-dark mb-2 me-2" (click)="open(content, '')">
                             Novo contato
                         </button>
 
                         <form class="d-flex" role="search">
-                            <input class="form-control mb-2 me-2" type="search" placeholder="Search" aria-label="Search"
-                                [(ngModel)]="text" name="search" (change)="buscarContato(text)" />
+                            <input class="form-control mb-2 me-2" type="search" placeholder="Pesquisar"
+                                aria-label="Search" [(ngModel)]="text" name="search" />
                         </form>
+
+                        <button class="btn btn-outline-dark mb-2 me-2" (click)="buscarContato(text)">
+                            Pesquisar
+                        </button>
                     </div>
 
                     <table class="table table-hover">
@@ -25,15 +29,17 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nome</th>
-                                <th scope="col">Contato</th>
+                                <th scope="col">Telefone Principal</th>
+                                <th scope="col">Telefone Secundario</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let contato of contatosList">
-                                <td><img src="sucesso.jpg"></td>
+                                <td><img [src]="contato.foto ? 'http://localhost:8080/' + contato.foto : 'person.png'"></td>
                                 <td class="teste">{{contato.nome}}</td>
-                                <td>Otto</td>
+                                <td>{{contato.telefone}}</td>
+                                <td>{{contato.telefoneSecundario}}</td>
                                 <td>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                         class="bi bi-pencil-square pointer" style="margin-right: 3px;"
@@ -70,11 +76,13 @@
                         </tbody>
                     </table>
 
-                    <nav aria-label="Page navigation example">
+                    <nav aria-label="Page navigation example" class="justify-content-center">
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link" (click)="previosPage()">Previous</a></li>
+                            <li class="page-item"><a class="page-link" (click)="previosPage()">
+                                    << </a>
+                            </li>
                             <li class="page-item"><a class="page-link">{{pageNumber}}</a></li>
-                            <li class="page-item"><a class="page-link" (click)="nextPage()">Next</a></li>
+                            <li class="page-item"><a class="page-link" (click)="nextPage()"> >> </a></li>
                         </ul>
                     </nav>
                 </div>
@@ -91,6 +99,10 @@
     <div class="modal-body">
         <form [formGroup]="formGroupContato">
             <div class="mb-3">
+                <div class="form-floating mb-3">
+                    <input type="file" hidden #fileInput (change)="onFileChange($event)">
+                    <img src="person.png" class="rounded mx-auto d-block img" (click)="fileInput.click()" alt="">
+                </div>
                 <div class="form-floating mb-3">
                     <input type="text" formControlName="nome" class="form-control" id="floatingInputName"
                         placeholder="nome">
@@ -117,10 +129,6 @@
                     <label for="floatingAdress">Endereço</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="file" class="form-control" id="floatingPassword" (change)="onFileSelected($event)" placeholder="foto">
-                    <label for="floatingPassword">Foto</label>
-                </div>
-                <div class="form-floating mb-3">
                     <input type="date" formControlName="dataAniversario" class="form-control" id="floatingDate"
                         placeholder="dataAniversario">
                     <label for="floatingDate">Data de Aniversario</label>
@@ -137,7 +145,7 @@
                 </div>
 
                 <div class="dropdown">
-                    <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         {{category}}
                     </button>
@@ -163,53 +171,55 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="formGroupContato">
+        <form>
             <div class="form-floating mb-3">
-                <input type="text" formControlName="nome" class="form-control" id="floatingInput" placeholder="nome">
-                <label for="floatingInput">Nome</label>
+                <input type="file" hidden #fileInput (change)="onFileChange($event)">
+                <img *ngIf="this.contatoModal.foto" [src]="'http://localhost:8080/' + this.contatoModal.foto"
+                    class="rounded mx-auto d-block img" (click)="fileInput.click()" alt="">
             </div>
             <div class="form-floating mb-3">
-                <input type="text" formControlName="telefone" class="form-control" id="floatingPassword"
-                    placeholder="telefone">
-                <label for="floatingPassword">Telefone</label>
+                <input type="text" [(ngModel)]="this.contatoModal.nome" name="name" class="form-control"
+                    id="floatingInputname" placeholder="nome">
+                <label for="floatingInputname">Nome</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" formControlName="telefoneSecundario" class="form-control" id="floatingPassword"
-                    placeholder="telefoneSecundario">
-                <label for="floatingPassword">Telefone Secundario</label>
+                <input type="text" [(ngModel)]="this.contatoModal.telefone" name="telefone" class="form-control"
+                    id="floatingtelefone" placeholder="telefone">
+                <label for="floatingtelefone">Telefone</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="email" formControlName="email" class="form-control" id="floatingPassword"
-                    placeholder="email">
-                <label for="floatingPassword">E-mail</label>
+                <input type="text" [(ngModel)]="this.contatoModal.telefoneSecundario" name="telefoneSecundario"
+                    class="form-control" id="floatingtelefoneSecundario" placeholder="telefoneSecundario">
+                <label for="floatingtelefoneSecundario">Telefone Secundario</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" formControlName="endereco" class="form-control" id="floatingPassword"
-                    placeholder="endereco">
-                <label for="floatingPassword">Endereço</label>
+                <input type="email" [(ngModel)]="this.contatoModal.email" name="email" class="form-control"
+                    id="floatingemail" placeholder="email">
+                <label for="floatingemail">E-mail</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="file" class="form-control" id="floatingPassword" placeholder="foto">
-                <label for="floatingPassword">Foto</label>
+                <input type="text" [(ngModel)]="this.contatoModal.endereco" name="endereco" class="form-control"
+                    id="floatingendereco" placeholder="endereco">
+                <label for="floatingendereco">Endereço</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="date" formControlName="dataAniversario" class="form-control" id="floatingPassword"
-                    placeholder="dataAniversario">
-                <label for="floatingPassword">Data de Aniversario</label>
+                <input type="date" [(ngModel)]="this.contatoModal.dataAniversario" name="dataAniversario"
+                    class="form-control" id="floatingdataAniversario" placeholder="dataAniversario">
+                <label for="floatingdataAniversario">Data de Aniversario</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" formControlName="empresa" class="form-control" id="floatingPassword"
-                    placeholder="empresa">
-                <label for="floatingPassword">Empresa</label>
+                <input type="text" [(ngModel)]="this.contatoModal.empresa" name="empresa" class="form-control"
+                    id="floatingempresa" placeholder="empresa">
+                <label for="floatingempresa">Empresa</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" formControlName="cargo" class="form-control" id="floatingPassword"
-                    placeholder="cargo">
-                <label for="floatingPassword">Cargo</label>
+                <input type="text" [(ngModel)]="this.contatoModal.cargo" name="cargo" class="form-control"
+                    id="floatingcargo" placeholder="cargo">
+                <label for="floatingcargo">Cargo</label>
             </div>
 
             <div class="dropdown">
-                <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     {{category}}
                 </button>

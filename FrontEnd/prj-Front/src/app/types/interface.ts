@@ -14,17 +14,18 @@ export interface Contato{
 }
 
 export class ContatoModal{
-  id?: number;
-  nome?: string;
-  telefone?: string;
-  telefoneSecundario?: string;
-  email?: string;
-  endereco?: string;
-  foto?: string;
-  dataAniversario?: string;
-  cargo?: string;
-  favorito?: boolean;
-  categoria?: string;
+    id?: number;
+    nome?: string;
+    telefone?: string;
+    telefoneSecundario?: string;
+    email?: string;
+    endereco?: string;
+    foto?: string;
+    dataAniversario?: Date;
+    empresa?: string;
+    cargo?: string;
+    favorito?: boolean;
+    categoria?: string;
 }
 
 export interface ContatoResponse {
