@@ -20,7 +20,6 @@ export class ContatosComponent implements OnInit {
   favorite: boolean = false;
 
   formGroupContato!: FormGroup;
-  contatoModal = new ContatoModal();
 
   contatosList: Contato[] = [];
 
@@ -30,7 +29,7 @@ export class ContatosComponent implements OnInit {
   fileSelecionado: File | null = null;
   previewUrl: string | null = null;
 
-  constructor(private contatoService: ContatoService, public formBuilder: FormBuilder) {
+  constructor(private contatoService: ContatoService, private formBuilder: FormBuilder) {
     this.getContatos();
   }
 
@@ -161,9 +160,7 @@ export class ContatosComponent implements OnInit {
   postContato() {
     var apiUrl = 'http://localhost:8080/api/contato/save';
     this.formGroupContato.get('categoria')?.setValue(this.category);
-
-    this.formGroupContato.value;
-    debugger;
+    
     const formData = new FormData();
     formData.append('contato', new Blob([JSON.stringify(this.formGroupContato.value)], {
       type: 'application/json'

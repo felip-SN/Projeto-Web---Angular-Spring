@@ -6,7 +6,6 @@
             <h1>Favoritos</h1>
         </div>
 
-
         <div class="row">
             <div class="card">
                 <div class="card-body">
@@ -20,13 +19,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let contato of contatoList">
-                                <td><img [src]="contato.foto ? 'http://localhost:8080/' + contato.foto : 'person.png'"></td>
+                            <tr *ngFor="let contato of contatosList">
+                                <td><img [src]="contato.foto ? 'http://localhost:8080/' + contato.foto : 'person.png'">
+                                </td>
                                 <td>{{contato.nome}}</td>
                                 <td>{{contato.telefone}}</td>
                                 <td>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-info-circle" viewBox="0 0 16 16">
+                                        class="bi bi-info-circle" viewBox="0 0 16 16"
+                                        (click)="openLg(content, 'edit', contato.id)">
                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                                         <path
                                             d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
@@ -40,3 +41,74 @@
         </div>
     </div>
 </div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Informações do contato</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="formGroupContato">
+            <div class="form-floating mb-3">
+                <input type="file" hidden disabled #fileInput>
+                <img [src]="this.formGroupContato.get('foto')?.value ? 'http://localhost:8080/' + this.formGroupContato.get('foto')?.value : 'person.png'"
+                    class="rounded mx-auto d-block img" (click)="fileInput.click()" alt="">
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" formControlName="nome" class="form-control" id="floatingInputname"
+                    placeholder="nome">
+                <label for="floatingInputname">Nome</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" formControlName="telefone" class="form-control" id="floatingtelefone"
+                    placeholder="telefone">
+                <label for="floatingtelefone">Telefone</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" formControlName="telefoneSecundario" class="form-control"
+                    id="floatingtelefoneSecundario" placeholder="telefoneSecundario">
+                <label for="floatingtelefoneSecundario">Telefone Secundario</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" formControlName="email" class="form-control" id="floatingemail" placeholder="email">
+                <label for="floatingemail">E-mail</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" formControlName="endereco" class="form-control" id="floatingendereco"
+                    placeholder="endereco">
+                <label for="floatingendereco">Endereço</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="date" formControlName="dataAniversario" class="form-control" id="floatingdataAniversario"
+                    placeholder="dataAniversario">
+                <label for="floatingdataAniversario">Data de Aniversario</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" formControlName="empresa" class="form-control" id="floatingempresa"
+                    placeholder="empresa">
+                <label for="floatingempresa">Empresa</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" formControlName="cargo" class="form-control" id="floatingcargo" placeholder="cargo">
+                <label for="floatingcargo">Cargo</label>
+            </div>
+
+            <div class="dropdown">
+                <button class="btn btn-outline-dark dropdown-toggle" disabled type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    {{category}}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><a class="dropdown-item">Familia</a></li>
+                    <li><a class="dropdown-item">Trabalho</a></li>
+                    <li><a class="dropdown-item">Escola</a></li>
+                    <li><a class="dropdown-item">Outros</a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+    </div>
+</ng-template>
+
