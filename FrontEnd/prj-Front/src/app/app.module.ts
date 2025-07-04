@@ -11,6 +11,7 @@ import { ContatosFavoritosComponent } from './contatos-favoritos/contatos-favori
 import { provideHttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ContatosCategoriaComponent } from './contatos-categoria/contatos-categoria.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CommonModule } from '@angular/common';
     SidebarComponent,
     FooterComponent,
     ContatosComponent,
-    ContatosFavoritosComponent
+    ContatosFavoritosComponent,
+    ContatosCategoriaComponent
   ],
   imports: [
     BrowserModule,

@@ -21,7 +21,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let contato of contatoList">
-                                <td><img src="sucesso.jpg"></td>
+                                <td><img [src]="contato.foto ? 'http://localhost:8080/' + contato.foto : 'person.png'"></td>
                                 <td>{{contato.nome}}</td>
                                 <td>{{contato.telefone}}</td>
                                 <td>

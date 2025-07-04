@@ -1,4 +1,4 @@
-import { Component, inject, TemplateRef } from '@angular/core';
+import { Component, inject, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Contato, ContatoModal, ContatoResponse } from '../types/interface';
 import { ContatoService } from '../service/contato.service';
@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './contatos.component.html',
   styleUrl: './contatos.component.css'
 })
-export class ContatosComponent {
+export class ContatosComponent implements OnInit {
   private modalService = inject(NgbModal);
   pageNumber: number = 0;
   pageSize: number = 0;
@@ -19,7 +19,7 @@ export class ContatosComponent {
   page: number = 1;
   favorite: boolean = false;
 
-  formGroupContato: FormGroup;
+  formGroupContato!: FormGroup;
   contatoModal = new ContatoModal();
 
   contatosList: Contato[] = [];
@@ -27,10 +27,15 @@ export class ContatosComponent {
   text: string = "";
   category: string = "Categoria";
 
-  constructor(private contatoService: ContatoService, private formBuilder: FormBuilder) {
-    this.getContatos();
+  fileSelecionado: File | null = null;
+  previewUrl: string | null = null;
 
-    this.formGroupContato = formBuilder.group({
+  constructor(private contatoService: ContatoService, public formBuilder: FormBuilder) {
+    this.getContatos();
+  }
+
+  ngOnInit(): void {
+    this.formGroupContato = this.formBuilder.group({
       id: [],
       nome: [],
       telefone: [],
@@ -47,40 +52,34 @@ export class ContatosComponent {
   }
 
   open(content: TemplateRef<any>, modal: string = "", id: number = 0) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true })
-
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true }).result.then(
+      (result) => {
+        this.previewUrl = "";
+      },
+      (reason) => {
+        this.clearFields();
+        this.previewUrl = "";
+      },
+    )
     if (modal == "edit") {
       const contato = this.contatosList.find(c => c.id == id);
 
-      // this.formGroupContato.setValue({
-      //   id: contato?.id,
-      //   nome: contato?.nome,
-      //   telefone: contato?.telefone,
-      //   telefoneSecundario: contato?.telefoneSecundario,
-      //   email: contato?.email,
-      //   endereco: contato?.endereco,
-      //   foto: contato?.foto,
-      //   dataAniversario: contato?.dataAniversario,
-      //   empresa: contato?.empresa,
-      //   cargo: contato?.cargo,
-      //   favorito: contato?.favorito,
-      //   categoria: contato?.categoria
-      // });
+      this.formGroupContato.setValue({
+        id: contato?.id,
+        nome: contato?.nome,
+        telefone: contato?.telefone,
+        telefoneSecundario: contato?.telefoneSecundario,
+        email: contato?.email,
+        endereco: contato?.endereco,
+        foto: contato?.foto,
+        dataAniversario: contato?.dataAniversario,
+        empresa: contato?.empresa,
+        cargo: contato?.cargo,
+        favorito: contato?.favorito,
+        categoria: contato?.categoria
+      });
 
-      this.contatoModal.id = contato?.id;
-      this.contatoModal.nome = contato?.nome,
-        this.contatoModal.telefone = contato?.telefone,
-        this.contatoModal.telefoneSecundario = contato?.telefoneSecundario,
-        this.contatoModal.email = contato?.email,
-        this.contatoModal.endereco = contato?.endereco,
-        this.contatoModal.foto = contato?.foto,
-        this.contatoModal.dataAniversario = contato?.dataAniversario,
-        this.contatoModal.empresa = contato?.empresa,
-        this.contatoModal.cargo = contato?.cargo,
-        this.contatoModal.favorito = contato?.favorito,
-        this.contatoModal.categoria = contato?.categoria
-
-      if (this.contatoModal.categoria == "" || this.contatoModal.categoria == null) {
+      if (this.formGroupContato.get("categoria")?.value == "" || this.formGroupContato.get("categoria")?.value == null) {
         this.category = "Categoria";
       } else {
         this.category = this.formGroupContato.get("categoria")?.value;
@@ -88,13 +87,39 @@ export class ContatosComponent {
     }
   }
 
+  clearFields() {
+    this.formGroupContato.setValue({
+      id: '',
+      nome: '',
+      telefone: '',
+      telefoneSecundario: '',
+      email: '',
+      endereco: '',
+      foto: '',
+      dataAniversario: '',
+      empresa: '',
+      cargo: '',
+      favorito: '',
+      categoria: ''
+    });
+  }
+
   getCategory(category: string) {
     this.category = category;
   }
 
-  fileSelecionado: File | null = null;
-
   onFileChange(event: any) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+
     if (event.target.files.length > 0) {
       this.fileSelecionado = event.target.files[0];
     }
@@ -134,6 +159,11 @@ export class ContatosComponent {
   }
 
   postContato() {
+    var apiUrl = 'http://localhost:8080/api/contato/save';
+    this.formGroupContato.get('categoria')?.setValue(this.category);
+
+    this.formGroupContato.value;
+    debugger;
     const formData = new FormData();
     formData.append('contato', new Blob([JSON.stringify(this.formGroupContato.value)], {
       type: 'application/json'
@@ -143,7 +173,7 @@ export class ContatosComponent {
       formData.append('foto', this.fileSelecionado);
     }
 
-    this.contatoService.save('http://localhost:8080/api/contato/save', formData).subscribe(() => {
+    this.contatoService.save(apiUrl, formData).subscribe(() => {
       this.formGroupContato.reset();
       this.fileSelecionado = null;
       this.getContatos();

@@ -20,7 +20,7 @@ export class ContatoModal{
     telefoneSecundario?: string;
     email?: string;
     endereco?: string;
-    foto?: string;
+    foto?: File | null | string | undefined;
     dataAniversario?: Date;
     empresa?: string;
     cargo?: string;

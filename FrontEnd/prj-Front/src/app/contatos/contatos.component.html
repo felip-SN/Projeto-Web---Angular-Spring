@@ -78,11 +78,11 @@
 
                     <nav aria-label="Page navigation example" class="justify-content-center">
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link" (click)="previosPage()">
+                            <li class="page-item page-previos"><a class="page-link" (click)="previosPage()">
                                     << </a>
                             </li>
                             <li class="page-item"><a class="page-link">{{pageNumber}}</a></li>
-                            <li class="page-item"><a class="page-link" (click)="nextPage()"> >> </a></li>
+                            <li class="page-item page-next"><a class="page-link" (click)="nextPage()"> >> </a></li>
                         </ul>
                     </nav>
                 </div>
@@ -93,7 +93,7 @@
 
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Salvar novo contato</h4>
+        <h4 class="modal-title" id="modal-basic-title">Novo contato</h4>
         <button type="button" class="btn-close" (click)="modal.close()"></button>
     </div>
     <div class="modal-body">
@@ -101,7 +101,7 @@
             <div class="mb-3">
                 <div class="form-floating mb-3">
                     <input type="file" hidden #fileInput (change)="onFileChange($event)">
-                    <img src="person.png" class="rounded mx-auto d-block img" (click)="fileInput.click()" alt="">
+                    <img [src]="previewUrl || 'person.png'" class="rounded mx-auto d-block img" (click)="fileInput.click()" alt="">
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" formControlName="nome" class="form-control" id="floatingInputName"
@@ -167,53 +167,53 @@
 
 <ng-template #edit let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Profile edit</h4>
+        <h4 class="modal-title" id="modal-basic-title">Editar contato</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
-        <form>
+        <form [formGroup]="formGroupContato">
             <div class="form-floating mb-3">
                 <input type="file" hidden #fileInput (change)="onFileChange($event)">
-                <img *ngIf="this.contatoModal.foto" [src]="'http://localhost:8080/' + this.contatoModal.foto"
+                <img [src]="this.formGroupContato.get('foto')?.value ? 'http://localhost:8080/' + this.formGroupContato.get('foto')?.value : 'person.png'"
                     class="rounded mx-auto d-block img" (click)="fileInput.click()" alt="">
             </div>
             <div class="form-floating mb-3">
-                <input type="text" [(ngModel)]="this.contatoModal.nome" name="name" class="form-control"
+                <input type="text" formControlName="nome" class="form-control"
                     id="floatingInputname" placeholder="nome">
                 <label for="floatingInputname">Nome</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" [(ngModel)]="this.contatoModal.telefone" name="telefone" class="form-control"
+                <input type="text" formControlName="telefone" class="form-control"
                     id="floatingtelefone" placeholder="telefone">
                 <label for="floatingtelefone">Telefone</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" [(ngModel)]="this.contatoModal.telefoneSecundario" name="telefoneSecundario"
+                <input type="text" formControlName="telefoneSecundario"
                     class="form-control" id="floatingtelefoneSecundario" placeholder="telefoneSecundario">
                 <label for="floatingtelefoneSecundario">Telefone Secundario</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="email" [(ngModel)]="this.contatoModal.email" name="email" class="form-control"
+                <input type="email" formControlName="email" class="form-control"
                     id="floatingemail" placeholder="email">
                 <label for="floatingemail">E-mail</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" [(ngModel)]="this.contatoModal.endereco" name="endereco" class="form-control"
+                <input type="text" formControlName="endereco" class="form-control"
                     id="floatingendereco" placeholder="endereco">
                 <label for="floatingendereco">Endereço</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="date" [(ngModel)]="this.contatoModal.dataAniversario" name="dataAniversario"
+                <input type="date" formControlName="dataAniversario"
                     class="form-control" id="floatingdataAniversario" placeholder="dataAniversario">
                 <label for="floatingdataAniversario">Data de Aniversario</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" [(ngModel)]="this.contatoModal.empresa" name="empresa" class="form-control"
+                <input type="text" formControlName="empresa" class="form-control"
                     id="floatingempresa" placeholder="empresa">
                 <label for="floatingempresa">Empresa</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" [(ngModel)]="this.contatoModal.cargo" name="cargo" class="form-control"
+                <input type="text" formControlName="cargo" class="form-control"
                     id="floatingcargo" placeholder="cargo">
                 <label for="floatingcargo">Cargo</label>
             </div>
@@ -233,6 +233,6 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Save click')">Save</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="postContato()" (click)="modal.close()">Save</button>
     </div>
 </ng-template>

@@ -1,11 +1,24 @@
-.bg{
-    background-color: #732424;
+.bg {
+    background-color: #2e1a1a;
 }
 
-span{
-    color: #f2e852;
+.sidebar:hover {
+    background-color: #444;
+    color: #fff;
 }
 
-.nav-link.active{
-    background-color: #8c6723 !important;
+span {
+    color: #ffcc00;
+
+    border-bottom: 1px solid #555;
+    margin-bottom: 10px;
+
+    align-content: center !important;
+}
+
+
+
+.nav-link.active {
+    background-color: #b9973f;
+    color: #000;
 }

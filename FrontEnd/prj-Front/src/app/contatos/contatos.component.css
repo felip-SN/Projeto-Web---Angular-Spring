@@ -1,45 +1,72 @@
-.pointer{
+.pointer {
     cursor: pointer;
 }
 
-img{
+img {
     width: 30px;
     height: 30px;
     border-radius: 50%;
 }
 
-.teste{
+.teste {
     text-align: start !important;
 }
 
-a{
+a {
     cursor: pointer;
     color: black;
 }
 
-.dropdown{
+.dropdown {
     max-width: fit-content;
     margin-left: auto !important;
     margin-right: auto !important;
 }
 
-.btn-outline-dark:hover{
+.btn-outline-dark:hover {
     background-color: #8c6723;
     border: #8c6723;
 }
 
-.form-control:focus{
+.form-control:focus {
     box-shadow: rgb(140, 103, 35) !important;
 }
 
-.search{
+.search {
     width: 30%;
 }
 
-.img{
+.img {
     width: 150px !important;
     height: 150px !important;
 
     border-radius: 50% !important;
     cursor: pointer;
+    border: solid 1px white;
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
+.img:hover {
+    border-color: #8c6723 !important;
+    box-shadow: 0 4px 8px 0 rgba(140, 103, 35, 0.2), 0 6px 20px 0 rgba(140, 103, 35, 0.19);
+}
+
+.page-link{
+    background: transparent !important;
+    border-color: white !important;
+
+    color: white;
+}
+
+.page-next:active {
+  background-color: #252525;
+  box-shadow: 0 5px #666666;
+  transform: translateY(-4px);
+}
+
+.page-previos:active {
+  background-color: #252525;
+  box-shadow: 0 5px #666666;
+  transform: translateY(4px);
 }

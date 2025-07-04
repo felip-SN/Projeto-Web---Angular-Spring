@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-body{
+body {
     height: 100vh;
-    background-color: #0d0d0d;
+    background-color: #1f1f1f;
 }
 
 .center-div {
@@ -11,11 +11,79 @@ body{
     margin-right: auto;
 }
 
-h1{
-    color: #f2e852;
+h1 {
+    color: #ffcc00;
+    font-size: 2.5rem;
+    font-weight: 700;
 }
 
-.card{
-    box-shadow: 10px 10px #d92323;
-    border-radius: 0px !important;
+.card {
+    background: rgba(13, 13, 13, 0.5);
+    border: 2px solid white;
+
+    box-shadow: 10px 10px black;
+}
+
+.modal-content {
+    background: rgba(13, 13, 13, 1);
+
+    .modal-title {
+        color: white !important;
+    }
+
+    .form-control {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05)) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+        border-radius: 12px !important;
+
+        color: white;
+    }
+
+    .form-floating label {
+        color: white !important;
+    }
+
+}
+
+th {
+    background-color: transparent !important;
+    color: white !important;
+
+    border-bottom: none;
+}
+
+tr {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border-radius: 12px;
+}
+
+td {
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+    padding: 16px;
+}
+
+td:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+th:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+table {
+    border-spacing: 0 5px;
+    border-collapse: separate;
+}
+
+button {
+    color: white !important;
 }
