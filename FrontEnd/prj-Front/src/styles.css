@@ -13,10 +13,22 @@ body {
     margin-right: auto;
 }
 
+.center-div-vertical {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 h1 {
+    font-size: 3rem;
+    letter-spacing: 1px;
     color: #ffcc00;
-    font-size: 2.5rem;
-    font-weight: 700;
+    text-shadow: 2px 2px #000;
+}
+
+h2 {
+    letter-spacing: 1px;
+    color: #ffcc00;
+    text-shadow: 2px 2px #000;
 }
 
 .card {
@@ -51,9 +63,11 @@ h1 {
 
 th {
     background-color: transparent !important;
-    color: white !important;
+    color: #ffcc00 !important;
 
     border-bottom: none;
+
+    font-size: 1.22rem;
 }
 
 tr {
@@ -62,6 +76,9 @@ tr {
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     border-radius: 12px;
+
+    font-size: 1.2rem;
+    text-shadow: 2px 2px #000;
 }
 
 td {
@@ -88,4 +105,10 @@ table {
 
 button {
     color: white !important;
+}
+
+button:active {
+    background-color: #252525;
+    box-shadow: 0 5px #666666;
+    transform: translateY(-4px);
 }

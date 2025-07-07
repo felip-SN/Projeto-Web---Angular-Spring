@@ -1,5 +1,5 @@
 .bg {
-    background-color: #2e1a1a;
+    background-color: #560E0E;
 }
 
 .sidebar:hover {
@@ -7,16 +7,20 @@
     color: #fff;
 }
 
-span {
+h3 {
     color: #ffcc00;
 
     border-bottom: 1px solid #555;
     margin-bottom: 10px;
 
-    align-content: center !important;
+    text-align: center;
+    text-shadow: 2px 2px #000;
 }
 
-
+.nav-link{
+    font-size: 1.2rem;
+    text-align: center;
+}
 
 .nav-link.active {
     background-color: #b9973f;

@@ -1,0 +1,45 @@
+.center{
+    max-width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.btn-light{
+    color: black !important;
+
+    border-top: 0px !important;
+    border-radius: 10% 10% 0% 0%;
+}
+
+.list-group-border{
+    border-radius: 0% 0% 0%;
+}
+
+.contato-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.contato-texto {
+  white-space: nowrap;       
+  overflow: hidden;
+  text-overflow: ellipsis;   
+  flex: 1;                    
+}
+
+svg{
+    cursor: pointer;
+}
