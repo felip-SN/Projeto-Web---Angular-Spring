@@ -49,12 +49,15 @@ export class ContatosFavoritosComponent implements OnInit {
     this.contatoService.get(apiUrl).subscribe({
       next: data => {
         this.contatosList = data;
+      },
+      error: error => {
+        alert(error);
       }
     })
   }
 
   openLg(content: TemplateRef<any>, modal: string = "", id: number = 0) {
-    this.modalService.open(content, { size: 'lg' }).result.then(
+    this.modalService.open(content, { size: 'lg', centered: true }).result.then(
       (result) => {},
       (reason) => {
         this.clearFields();

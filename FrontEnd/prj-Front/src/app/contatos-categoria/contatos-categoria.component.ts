@@ -23,7 +23,7 @@ export class ContatosCategoriaComponent implements OnInit {
   constructor(private contatoService: ContatoService) { }
 
   open(content: TemplateRef<any>, category: string) {
-    this.modalService.open(content, { size: 'xl' });
+    this.modalService.open(content, { size: 'xl', centered: true });
 
     switch(category){
       case 'Familia': this.contatos = this.contatosFamilia; break;
@@ -48,6 +48,9 @@ export class ContatosCategoriaComponent implements OnInit {
     this.contatoService.get(apiUrl).subscribe({
       next: data => {
         this.contatosFamilia = data;
+      },
+      error: error => {
+        alert(error);
       }
     });
   }
@@ -58,6 +61,9 @@ export class ContatosCategoriaComponent implements OnInit {
     this.contatoService.get(apiUrl).subscribe({
       next: data => {
         this.contatosTrabalho = data;
+      },
+      error: error => {
+        alert(error);
       }
     });
   }
@@ -68,6 +74,9 @@ export class ContatosCategoriaComponent implements OnInit {
     this.contatoService.get(apiUrl).subscribe({
       next: data => {
         this.contatosFaculdade = data;
+      },
+      error: error => {
+        alert(error);
       }
     });
   }
@@ -78,6 +87,9 @@ export class ContatosCategoriaComponent implements OnInit {
     this.contatoService.get(apiUrl).subscribe({
       next: data => {
         this.contatosAmigos = data;
+      },
+      error: error => {
+        alert(error);
       }
     });
   }
@@ -88,6 +100,9 @@ export class ContatosCategoriaComponent implements OnInit {
     this.contatoService.get(apiUrl).subscribe({
       next: data => {
         this.contatosEmergencia = data;
+      },
+      error: error => {
+        alert(error);
       }
     });
   }

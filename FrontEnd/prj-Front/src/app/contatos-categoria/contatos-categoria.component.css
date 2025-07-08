@@ -43,3 +43,9 @@ img {
 svg{
     cursor: pointer;
 }
+
+@media(max-width: 1280px) {
+    .top{
+      margin-top: 1rem;
+    }
+}

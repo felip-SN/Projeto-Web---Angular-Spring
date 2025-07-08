@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class ContatosComponent implements OnInit {
   private modalService = inject(NgbModal);
+
   pageNumber: number = 0;
   pageSize: number = 0;
   totalPage: number = 0;
@@ -153,6 +154,9 @@ export class ContatosComponent implements OnInit {
         this.pageNumber = data.pageable.pageNumber + 1;
         this.pageSize = data.pageable.pageSize;
         this.totalPage = data.totalPages;
+      },
+      error: error => {
+        alert(error);
       }
     });
   }
@@ -160,7 +164,7 @@ export class ContatosComponent implements OnInit {
   postContato() {
     var apiUrl = 'http://localhost:8080/api/contato/save';
     this.formGroupContato.get('categoria')?.setValue(this.category);
-    
+
     const formData = new FormData();
     formData.append('contato', new Blob([JSON.stringify(this.formGroupContato.value)], {
       type: 'application/json'
@@ -171,6 +175,7 @@ export class ContatosComponent implements OnInit {
     }
 
     this.contatoService.save(apiUrl, formData).subscribe(() => {
+      next:
       this.formGroupContato.reset();
       this.fileSelecionado = null;
       this.getContatos();
@@ -183,6 +188,9 @@ export class ContatosComponent implements OnInit {
     this.contatoService.delete(apiUrl).subscribe({
       next: (data) => {
         this.getContatos();
+      },
+      error: error => {
+        alert(error);
       }
     });
   }
@@ -197,6 +205,9 @@ export class ContatosComponent implements OnInit {
       next: (data) => {
         contato!.favorito = novoFavorito;
         this.getContatos();
+      },
+      error: error => {
+        alert(error);
       }
     });
   }
@@ -212,6 +223,9 @@ export class ContatosComponent implements OnInit {
     this.contatoService.get(apiUrl).subscribe({
       next: data => {
         this.contatosList = data;
+      },
+      error: error => {
+        alert(error);
       }
     });
   }
