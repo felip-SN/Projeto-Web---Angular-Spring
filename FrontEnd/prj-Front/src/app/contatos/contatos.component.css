@@ -70,3 +70,9 @@ a {
   box-shadow: 0 5px #666666;
   transform: translateY(4px);
 }
+
+@media(max-width: 1280px) {
+    .card{
+        margin-bottom: 5rem !important;
+    }
+}
